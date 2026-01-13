@@ -1,0 +1,126 @@
+\documentclass[]{academic_template}
+
+% single-column: \documentclass[]{academic_template}
+% twocolumn: \documentclass[twocolumn]{academic_template}
+
+\usepackage[toc,page,header]{appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\usepackage{makecell}
+\usepackage{algorithm}      % 算法浮动环境
+\usepackage{algpseudocode}  % 算法伪代码语法
+
+\usepackage{graphicx}
+
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,       % 自动换行
+  columns=fullflexible,  % 更好换行
+  keepspaces=true,       % 保留空格
+  showstringspaces=false
+}
+
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{wrapfig}
+\newcommand{\tablestyle}[2]{\setlength{\tabcolsep}{#1}\renewcommand{\arraystretch}{#2}\centering\footnotesize}
+
+\usepackage{colortbl}
+\usepackage{xcolor}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\def\eg{\emph{e.g.}}
+\def\ie{\emph{i.e.}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%! 建议在此处修改模板的配色和logo大小等参数
+
+% \setthemecolor{8B008B} % 主题颜色，默认深蓝，这个是深紫色
+\setlogoheight{14mm}   % logo size
+% \sectionlineon %增加章节分割线
+\setlogospacing{5mm}
+\setsjtublue % 设置logo为上交蓝，默认为上交红
+
+\settitlerulethickness{3pt}  % title line size
+
+% 对abstract的调整
+\abstractboxon %显示边框
+\setabstractframecolor{gray} %灰色边框
+\setabstractbgcolor{gray!10} %浅灰色背景
+\setlogotolineshift{5mm} % logo与标题行的距离
+
+% 设置标题上下横线的粗度（默认 0.5pt）
+\settoprulethickness{2.5pt}  
+\setbottomrulethickness{1.5pt} 
+
+
+
+%%%%%%%%%%%%%%%%%%%
+
+
+\title{\LaTeX Template for VisionXLab@RethinkLab: A Comprehensive Template for Academic Writing}
+
+\author[1,*]{First Author}
+\author[1,2]{Second Author}
+\author[2,3]{Third Author}
+\author[1, \dagger]{Fourth Author with a looooooooooooooooooooong name}
+
+% 论文单位
+\affiliation[1]{Your University}
+\affiliation[2]{Your Institute or Company}
+\affiliation[3]{A Company with a loooooooooooooooooooooooooooooooooooooooooong name}
+
+\contribution[*]{Equal contribution}
+\contribution[\dagger]{Corresponding Author}
+
+\abstract{
+This is a placeholder abstract for your academic paper template. The abstract should provide a concise summary of your research, including the motivation, main contributions, methodology, and key results. Typically, an abstract ranges from 150 to 250 words and should be self-contained, allowing readers to understand the essence of your work without reading the entire paper.
+
+In this template, we demonstrate various LaTeX elements commonly used in academic papers, including figures, tables, algorithms, equations, and citations. This template is designed to be highly extensible and suitable for various academic disciplines. You can easily customize the content, styling, and structure to fit your specific needs.
+}
+
+\date{\today}
+% Uncomment below to add correspondence email
+% \correspondence{Author Name at \email{your.email@example.com}}
+
+% Additional info fields
+\checkdata[Project Page]{\url{https://your-project-page.github.io/}}
+\checkdata[Code]{\url{https://github.com/your-repo}}
+\checkdata[Hugging Face]{\url{https://huggingface.co/your-repo}}
+
+\begin{document}
+\maketitle
+
+% 如果需要目录，取消下面的注释
+% \newpage
+% \tableofcontents
+% \newpage
+
+\input{sections/1_introduction}
+\input{sections/2_related_work}
+\input{sections/3_method}
+\input{sections/4_experiments}
+\input{sections/5_conclusion}
+
+\clearpage
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+% 如果需要附录，取消下面的注释
+% \clearpage
+% \beginappendix
+% \input{sections/appendix}
+
+\end{document}

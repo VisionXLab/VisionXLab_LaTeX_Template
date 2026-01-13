@@ -1,0 +1,151 @@
+\section{Method}
+\label{sec:method}
+
+% 本章节展示技术方法，包含算法、公式、架构图等
+
+In this section, we present the details of our proposed method. We first provide an overview of the framework architecture in Section~\ref{subsec:overview}, followed by detailed descriptions of the key components in Sections~\ref{subsec:component1}--\ref{subsec:component3}.
+
+% 方法概述
+\subsection{Overview}
+\label{subsec:overview}
+
+% 示例架构图
+\begin{figure}[!tb]
+\centering
+\includegraphics[width=0.6\linewidth]{figures/content/architecture.pdf}
+\caption{\textbf{Overview of our proposed framework.} The architecture consists of three main components: (a) [Component 1] for [purpose], (b) [Component 2] for [purpose], and (c) [Component 3] for [purpose]. The data flows from left to right, with [describe the processing pipeline].}
+\label{fig:architecture}
+\end{figure}
+
+As illustrated in Figure~\ref{fig:architecture}, our framework takes [input description] and produces [output description] through [number] main stages. The overall objective can be formulated as:
+
+\begin{equation}
+\label{eq:objective}
+\min_{\theta} \mathbb{E}_{(x,y) \sim \mathcal{D}} \left[ \ell(f_\theta(x), y) \right] + \Omega(\theta)
+\end{equation}
+
+where $\theta$ denotes the model parameters, $\mathcal{D}$ is the data distribution, $f_\theta$ is our model, $\ell$ is the loss function, and $\Omega(\theta)$ represents the regularization term.
+
+% 第一个组件
+\subsection{[Component 1 Name]}
+\label{subsec:component1}
+
+The first component of our framework is designed to [purpose and motivation]. Given an input $\mathbf{x} \in \mathbb{R}^{d}$, we first apply [transformation]:
+
+\begin{equation}
+\label{eq:component1}
+\mathbf{h} = \text{Encoder}(\mathbf{x}) = \mathbf{W}_e \mathbf{x} + \mathbf{b}_e
+\end{equation}
+
+where $\mathbf{W}_e \in \mathbb{R}^{d_h \times d}$ and $\mathbf{b}_e \in \mathbb{R}^{d_h}$ are learnable parameters. The resulting representation $\mathbf{h}$ captures [what it captures].
+
+To enhance [specific aspect], we introduce [novel mechanism]:
+
+\begin{equation}
+\label{eq:attention}
+\alpha_{ij} = \frac{\exp(\text{score}(\mathbf{h}_i, \mathbf{h}_j))}{\sum_{k=1}^{n} \exp(\text{score}(\mathbf{h}_i, \mathbf{h}_k))}
+\end{equation}
+
+where $\text{score}(\cdot, \cdot)$ measures the compatibility between different representations.
+
+% 第二个组件
+\subsection{[Component 2 Name]}
+\label{subsec:component2}
+
+% 示例算法伪代码
+\begin{algorithm}[!tb]
+\caption{[Algorithm Name]}
+\label{alg:main}
+\begin{algorithmic}[1]
+\Require Input data $\mathbf{X} = \{\mathbf{x}_1, \ldots, \mathbf{x}_n\}$, hyperparameters $\lambda, \eta$
+\Ensure Output predictions $\mathbf{Y} = \{\mathbf{y}_1, \ldots, \mathbf{y}_n\}$
+\State Initialize parameters $\theta \leftarrow \theta_0$
+\For{$t = 1$ to $T$}
+    \State Sample mini-batch $\mathcal{B} \subset \{1, \ldots, n\}$
+    \For{$i \in \mathcal{B}$}
+        \State Compute forward pass: $\hat{\mathbf{y}}_i = f_\theta(\mathbf{x}_i)$
+        \State Compute loss: $\mathcal{L}_i = \ell(\hat{\mathbf{y}}_i, \mathbf{y}_i)$
+    \EndFor
+    \State Compute gradient: $\nabla_\theta \mathcal{L} = \frac{1}{|\mathcal{B}|} \sum_{i \in \mathcal{B}} \nabla_\theta \mathcal{L}_i$
+    \State Update parameters: $\theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}$
+\EndFor
+\State \Return $\mathbf{Y} = \{f_\theta(\mathbf{x}_i)\}_{i=1}^{n}$
+\end{algorithmic}
+\end{algorithm}
+
+Building on the representations from the previous component, we design [Component 2] to [purpose]. The complete procedure is summarized in Algorithm~\ref{alg:main}. The key idea is to [describe key idea] by iteratively [describe iteration process].
+
+At each step $t$, we update [what gets updated] according to:
+
+\begin{equation}
+\label{eq:update}
+\mathbf{z}^{(t+1)} = \mathbf{z}^{(t)} + \alpha \cdot \nabla_{\mathbf{z}} \mathcal{F}(\mathbf{z}^{(t)}, \mathbf{h})
+\end{equation}
+
+where $\mathcal{F}$ is an energy function and $\alpha$ is the step size.
+
+% 第三个组件
+\subsection{[Component 3 Name]}
+\label{subsec:component3}
+
+% 子图示例
+\begin{figure}[!tb]
+\centering
+\makebox[\linewidth][c]{%
+\begin{subfigure}{0.28\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/content/sub_figure_a.pdf}
+    \caption{Visualization of [aspect A]}
+    \label{fig:sub_a}
+\end{subfigure}
+\hspace{0.08\linewidth}% 固定间距，避免贴边
+\begin{subfigure}{0.28\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/content/sub_figure_b.pdf}
+    \caption{Visualization of [aspect B]}
+    \label{fig:sub_b}
+\end{subfigure}
+}% 使整体块居中，左右边距均匀
+\caption{\textbf{Detailed visualization of [component].} (a) shows [description of subplot a], while (b) illustrates [description of subplot b]. These visualizations demonstrate [what they demonstrate].}
+\label{fig:visualization}
+\end{figure}
+
+The final component integrates outputs from the previous stages to produce the final prediction. As shown in Figure~\ref{fig:visualization}, [describe what the figure shows]. Mathematically, this can be expressed as:
+
+\begin{equation}
+\label{eq:final}
+\hat{\mathbf{y}} = g(\mathbf{z}, \mathbf{h}) = \text{Decoder}(\mathbf{z} \oplus \mathbf{h})
+\end{equation}
+
+where $\oplus$ denotes the fusion operation and $g$ is the final prediction function.
+
+% 损失函数
+\subsection{Training Objective}
+\label{subsec:training}
+
+To train our model end-to-end, we define a multi-task loss function that combines [different objectives]:
+
+\begin{equation}
+\label{eq:total_loss}
+\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{pred}} + \lambda_1 \mathcal{L}_{\text{aux}} + \lambda_2 \mathcal{L}_{\text{reg}}
+\end{equation}
+
+where:
+\begin{itemize}
+\item $\mathcal{L}_{\text{pred}}$ is the main prediction loss, typically defined as:
+\begin{equation}
+\mathcal{L}_{\text{pred}} = \frac{1}{N} \sum_{i=1}^{N} \|\hat{\mathbf{y}}_i - \mathbf{y}_i\|^2
+\end{equation}
+
+\item $\mathcal{L}_{\text{aux}}$ is an auxiliary loss that encourages [specific property]
+
+\item $\mathcal{L}_{\text{reg}}$ is a regularization term to prevent overfitting
+
+\item $\lambda_1, \lambda_2$ are hyperparameters that balance the different objectives
+\end{itemize}
+
+% 实现细节
+\subsection{Implementation Details}
+\label{subsec:implementation}
+
+We implement our framework using [framework name, \eg PyTorch]. The model is trained for [number] epochs with batch size [size] using the Adam optimizer~\cite{kingma2014adam} with learning rate [lr]. We employ [specific techniques like dropout, batch normalization, etc.] to improve training stability and generalization. All experiments are conducted on [hardware specifications].
