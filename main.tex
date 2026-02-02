@@ -98,7 +98,11 @@ In this template, we demonstrate various LaTeX elements commonly used in academi
 \checkdata[Project Page]{\url{https://your-project-page.github.io/}}
 \checkdata[Code]{\url{https://github.com/your-repo}}
 \checkdata[Hugging Face]{\url{https://huggingface.co/your-repo}}
-
+% 放宽浮动体放置限制
+\renewcommand{\topfraction}{0.9}      % 顶部能放浮动体的最大比例
+\renewcommand{\bottomfraction}{0.8}   % 底部能放浮动体的最大比例
+\renewcommand{\textfraction}{0.07}    % 一页中文字必须占据的最小比例
+\renewcommand{\floatpagefraction}{0.85} % 浮动页（全是表格的页）的最小占用比例
 \begin{document}
 \maketitle
 
@@ -118,9 +122,9 @@ In this template, we demonstrate various LaTeX elements commonly used in academi
 \bibliographystyle{plainnat}
 \bibliography{references}
 
-% 如果需要附录，取消下面的注释
-% \clearpage
-% \beginappendix
-% \input{sections/appendix}
+% 如果需要附录，取消下面三行的注释，反之加上注释
+\clearpage
+\beginappendix
+\input{sections/appendix}
 
 \end{document}
