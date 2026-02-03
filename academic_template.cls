@@ -331,7 +331,7 @@
             \if@sjtublue
                 \includegraphics[height=\logoheight]{figures/logos/sjtu_blue.png}%
             \else
-                \includegraphics[height=\logoheight]{figures/logos/sjtu_long.png}%
+                \includegraphics[height=\logoheight]{figures/logos/sjtu_red.png}%
             \fi
         }%
     }
