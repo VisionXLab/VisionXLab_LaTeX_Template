@@ -271,7 +271,13 @@
   \vskip 3mm
 }
 
-\newcommand{\beginappendix}{\appendix{\titlefont\sffamily \themeblue{Appendix}\par}}
+\newcommand{\beginappendix}{%
+  \appendix%
+  \section*{{\titlefont\sffamily\themeblue{Appendix}}}%
+  \addcontentsline{toc}{section}{Appendix}%
+  \setcounter{section}{1}% Set to 1 so subsections will be A.1, A.2, etc.
+  \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}%
+}
 
 
 \usepackage[subfigure]{tocloft}
