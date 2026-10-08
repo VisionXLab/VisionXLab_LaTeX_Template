@@ -35,6 +35,8 @@
 
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{marvosym}
+
 
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
@@ -74,15 +76,16 @@
 \author[1,*]{First Author}
 \author[1,2]{Second Author}
 \author[2,3]{Third Author}
-\author[1, \dagger]{Fourth Author with a looooooooooooooooooooong name}
+\author[1,\mbox{\Letter}]{Fourth Author with a looooooooooooooooooooong name}
 
 % 论文单位
 \affiliation[1]{Your University}
 \affiliation[2]{Your Institute or Company}
 \affiliation[3]{A Company with a loooooooooooooooooooooooooooooooooooooooooong name}
 
-\contribution[*]{Equal contribution}
-\contribution[\dagger]{Corresponding Author}
+% \contribution[*]{Equal contribution}
+\contribution[*]{Core Contributors}
+\contribution[\mbox{\Letter}]{Corresponding Author}
 
 \abstract{
 This is a placeholder abstract for your academic paper template. The abstract should provide a concise summary of your research, including the motivation, main contributions, methodology, and key results. Typically, an abstract ranges from 150 to 250 words and should be self-contained, allowing readers to understand the essence of your work without reading the entire paper.
@@ -125,6 +128,10 @@ In this template, we demonstrate various LaTeX elements commonly used in academi
 % 如果需要附录，取消下面三行的注释，反之加上注释
 \clearpage
 \beginappendix
+\renewcommand{\textfraction}{0.01}      % 允许更少的文字（原来是0.07）
+\renewcommand{\floatpagefraction}{0.6}  % 降低浮动页门槛（原来是0.85）
+\renewcommand{\topfraction}{0.99}       % 允许顶部几乎全是浮动体
+\renewcommand{\bottomfraction}{0.99}    % 允许底部几乎全是浮动体
 \input{sections/appendix}
 
 \end{document}
