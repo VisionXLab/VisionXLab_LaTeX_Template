@@ -74,12 +74,17 @@ def inspect(path, expected_text=(), expected_links=(), expected_contacts=()):
             failures.append('Fatal conversion error in ' + log_path.name)
     visible_text = ' '.join(n.text() for n in nodes if n.has_class('ltx_document'))
     links = {n.attrs.get('href') for n in nodes if n.tag == 'a'}
+    front_nodes = {id(n) for front in titles + authors for n in front.walk()}
+    front_end = max((i for i, n in enumerate(nodes) if id(n) in front_nodes), default=-1)
     for text in expected_text:
         if text not in visible_text:
             failures.append('Missing expected text: ' + text)
     for link in expected_links:
         if link not in links:
             failures.append('Missing expected link: ' + link)
+        elif any(i < front_end for i, n in enumerate(nodes)
+                 if n.tag == 'a' and n.attrs.get('href') == link):
+            failures.append('Project link appears before title/author block: ' + link)
     for expected in expected_contacts:
         name, sep, contact = expected.partition('=')
         if not sep:

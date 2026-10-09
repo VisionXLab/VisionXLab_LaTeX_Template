@@ -7,6 +7,8 @@
 \IfFileExists{latexml.sty}{\usepackage{latexml}}{%
   \ifdefined\iflatexml\else\newif\iflatexml\fi
 }
+% Call after \maketitle. PDF already prints the original class's link block.
+\providecommand{\printprojectlinks}{}
 \iflatexml
   % This supported package parses \author[1,2]{...} and associates \affil
   % labels with the matching authors, rather than swallowing a lone '['.
@@ -86,9 +88,12 @@
   \providecommand{\correspondence}[1]{\checkdata[Correspondence]{#1}}
   % The PDF template displays dates only when \date is explicitly called.
   \date{}
-  % Document hooks run inside the body; LaTeXML inserts front matter before it.
-  % This retains links after the title/abstract without redefining \maketitle.
-  \AtBeginDocument{\vxl@htmlinfo}
+  % Production converters can emit native front matter at \maketitle.
+  % A begin-document hook then precedes the title; use an explicit body call.
+  \renewcommand{\printprojectlinks}{%
+    \vxl@htmlinfo
+    \global\let\vxl@htmlinfo\@empty
+  }
 
   % PDF layout controls have no semantic HTML equivalent. Consume their
   % complete arguments so values such as '14mm' cannot leak into the page.

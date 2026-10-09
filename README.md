@@ -47,7 +47,17 @@ VisionXLab_latex/
 \input{academic_template_html}
 ```
 
-已有论文只需复制 `academic_template_html.tex` 并增加这行输入；上传 arXiv 和 Overleaf 时也要带上该文件。只替换 `.cls` 无法修复 HTML：LaTeXML 找不到自定义类的绑定时会使用通用类，不执行其宏定义。结果是配置命令直接显示在页面上，且 `\affiliation[1]{...}` 被按不带可选参数的语法解析，留下多余的 `[` 和错位的单位。
+已有论文需复制 `academic_template_html.tex`、增加上面的输入，并在 `\maketitle` 后显式输出项目链接：
+
+```latex
+\begin{document}
+\maketitle
+\printprojectlinks
+```
+
+该调用在 PDF 中不输出额外内容，原类文件已显示项目链接。HTML 的链接在标题与作者信息之后输出；不要通过 `\AtBeginDocument` 自动插入，线上转换器可能在 `\maketitle` 时才生成标题，导致链接跑到标题上方。
+
+上传 arXiv 和 Overleaf 时也要带上兼容文件。只替换 `.cls` 无法修复 HTML：LaTeXML 找不到自定义类的绑定时会使用通用类，不执行其宏定义。结果是配置命令直接显示在页面上，且 `\affiliation[1]{...}` 被按不带可选参数的语法解析，留下多余的 `[` 和错位的单位。
 
 兼容层只在 LaTeXML 转换时启用：版式配置的参数会被完整消费，作者及其单位对应关系、贡献说明、日期和项目链接会被保留。贡献标记会解析为对应作者的说明。PDF 继续使用原有类文件。HTML 使用适应网页的标准布局，不复制 PDF 的首页 Logo、装饰线和摘要框。
 
