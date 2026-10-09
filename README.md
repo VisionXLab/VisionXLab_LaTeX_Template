@@ -17,7 +17,8 @@
 ```
 VisionXLab_latex/
 ├── main.tex                  # 主文件 ⭐
-├── academic_template.cls     # 样式文件
+├── academic_template.cls     # PDF 样式文件
+├── academic_template_html.tex # arXiv / LaTeXML HTML 兼容层
 ├── references.bib            # 参考文献
 ├── sections/                 # 章节文件（独立管理）
 └── figures/                  # 图片资源
@@ -29,13 +30,40 @@ VisionXLab_latex/
 
 ### Overleaf 使用（推荐）
 
-1. 压缩以下文件为 `.zip`：`main.tex`、`academic_template.cls`、`references.bib`、`sections/`、`figures/`
+1. 压缩以下文件为 `.zip`：`main.tex`、`academic_template.cls`、`academic_template_html.tex`、`references.bib`、`sections/`、`figures/`
 2. 登录 [Overleaf](https://www.overleaf.com/) → New Project → Upload Project
 3. 上传 zip 文件，点击 "Recompile" 编译
 
 ### 本地使用
 
 先下载**MikTeX**，并且把它的`bin/x64`添加到Path，建议在vscode中使用扩展LaTeX Workshop。
+
+### arXiv HTML 兼容与预览
+
+主文件必须在 `\documentclass` 后、任何模板配置和作者信息之前，显式加载兼容层：
+
+```latex
+\documentclass[]{academic_template}
+\input{academic_template_html}
+```
+
+已有论文只需复制 `academic_template_html.tex` 并增加这行输入；上传 arXiv 和 Overleaf 时也要带上该文件。只替换 `.cls` 无法修复 HTML：LaTeXML 找不到自定义类的绑定时会使用通用类，不执行其宏定义。结果是配置命令直接显示在页面上，且 `\affiliation[1]{...}` 被按不带可选参数的语法解析，留下多余的 `[` 和错位的单位。
+
+兼容层只在 LaTeXML 转换时启用：版式配置的参数会被完整消费，作者及其单位对应关系、贡献说明、日期和项目链接会被保留。贡献标记会解析为对应作者的说明。PDF 继续使用原有类文件。HTML 使用适应网页的标准布局，不复制 PDF 的首页 Logo、装饰线和摘要框。
+
+可用 LaTeXML 团队维护的 [ar5ivist](https://github.com/dginev/ar5ivist) 容器预览。先按正常 PDF 编译流程生成最新的 `main.bbl`（`pdflatex → bibtex → pdflatex → pdflatex`）；该容器使用 arXiv 模式，不会自动运行 BibTeX，缺少 `.bbl` 会导致引用缺失。以下命令在模板根目录的 Linux/macOS 或 WSL shell 中执行，需要 Docker：
+
+```bash
+docker run -v "$PWD":/docdir -w /docdir \
+  --user "$(id -u):$(id -g)" \
+  latexml/ar5ivist:2512.17 \
+  --source=main.tex --destination=html/main.html
+python3 tools/check_html.py html/main.html
+```
+
+检查特定内容没有被静默丢弃时，可增加重复的 `--expect "Core Contributors"`、`--expect-link "https://github.com/your-repo"` 和 `--expect-contact "First Author=Your University"` 参数。退出码为 0 表示 HTML 元素与指定元数据检查通过；脚本还会拒绝日志中的致命错误，并报告 `conversion_log_error_count`。完整转换是否成功仍需查看日志，不能只依赖 HTML 中是否有红色命令。
+
+在浏览器中检查 `html/main.html` 和转换日志。该容器使用 arXiv 分支的 LaTeXML 与 ar5iv 的扩展绑定，是同一转换工具链的本地检查；arXiv 线上版本和配置仍可能不同，最终以投稿流程的 HTML 预览为准。[arXiv 官方最佳实践](https://info.arxiv.org/help/submit_latex_best_practices.html)也建议使用受支持的包和标准首页元数据。
 
 ## 📝 基本使用
 
