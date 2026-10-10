@@ -1,0 +1,137 @@
+% LaTeXML compatibility for academic_template.
+% Explicitly input this file immediately after \documentclass, before metadata
+% or configuration commands. A .cls-only change is insufficient: LaTeXML may
+% replace an unsupported class with OmniBus instead of executing its macros.
+% The standard latexml binding sets \iflatexml true. In PDF engines the
+% optional package (or the fallback below) leaves it false.
+\IfFileExists{latexml.sty}{\usepackage{latexml}}{%
+  \ifdefined\iflatexml\else\newif\iflatexml\fi
+}
+% Call after \maketitle. PDF already prints the original class's link block.
+\providecommand{\printprojectlinks}{}
+\iflatexml
+  % This supported package parses \author[1,2]{...} and associates \affil
+  % labels with the matching authors, rather than swallowing a lone '['.
+  \usepackage{authblk}
+  \usepackage{hyperref}
+  \makeatletter
+  % Encode markers as simple labels. Older authblk bindings stringify author
+  % marks but digest affiliation marks: raw \dagger / \mbox{\Letter} then
+  % disagree. One shared mapping preserves numeric and symbolic associations.
+  \newcount\vxl@nextlabel
+  \vxl@nextlabel=0
+  % The first undelimited argument skips spaces after a comma (e.g. 1, \dagger).
+  \def\vxl@getlabel#1{\vxl@labelhead#1\vxl@end}
+  \def\vxl@labelhead#1#2\vxl@end{%
+    \ifcsname vxl@label@\detokenize{#1#2}\endcsname\else
+      \global\advance\vxl@nextlabel by 1
+      \expandafter\xdef\csname vxl@label@\detokenize{#1#2}\endcsname{vxl\the\vxl@nextlabel}%
+    \fi
+    \edef\vxl@resolved{\csname vxl@label@\detokenize{#1#2}\endcsname}%
+  }
+  \def\vxl@stop{\vxl@stop}
+  \def\vxl@parselabel#1,{%
+    \def\vxl@item{#1}%
+    \ifx\vxl@item\vxl@stop
+      \let\vxl@next\relax
+    \else
+      \if\relax\detokenize{#1}\relax\else
+        \vxl@getlabel{#1}%
+        \ifx\vxl@converted\@empty
+          \edef\vxl@converted{\vxl@resolved}%
+        \else
+          \edef\vxl@converted{\vxl@converted,\vxl@resolved}%
+        \fi
+      \fi
+      \let\vxl@next\vxl@parselabel
+    \fi
+    \vxl@next
+  }
+  \def\vxl@convertlabels#1{%
+    \def\vxl@converted{}%
+    \vxl@parselabel#1,\vxl@stop,
+  }
+  % Retain the native binding via an alias; \renewcommand\author is ignored.
+  \let\vxl@nativeauthor\author
+  \newcommand{\vxl@htmlauthor}[2][]{%
+    \vxl@convertlabels{#1}%
+    \expandafter\vxl@nativeauthor\expandafter[\vxl@converted]{#2}%
+  }
+  \let\author\vxl@htmlauthor
+  \renewcommand{\affiliation}[2][]{%
+    \vxl@convertlabels{#1}%
+    \ifx\vxl@converted\@empty
+      \affil{#2}%
+    \else
+      \expandafter\affil\expandafter[\vxl@converted]{#2}%
+    \fi
+  }
+
+  % Resolve contribution marks through the same supported label mechanism.
+  % LaTeXML displays the explanation alongside the corresponding author.
+  % Do not redefine \maketitle: its binding must emit the native front matter.
+  \def\vxl@htmlinfo{}
+  \providecommand{\contribution}{}
+  \renewcommand{\contribution}[2][]{%
+    \if\relax\detokenize{#1}\relax
+      \g@addto@macro\vxl@htmlinfo{\par\noindent\emph{#2}\\\par}%
+    \else
+      \vxl@convertlabels{#1}%
+      \expandafter\affil\expandafter[\vxl@converted]{\emph{#2}}%
+    \fi
+  }
+  \providecommand{\checkdata}{}
+  \renewcommand{\checkdata}[2][]{%
+    \g@addto@macro\vxl@htmlinfo{\par\noindent\textbf{#1:} #2\\\par}%
+  }
+  \providecommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+  \providecommand{\correspondence}[1]{\checkdata[Correspondence]{#1}}
+  % The PDF template displays dates only when \date is explicitly called.
+  \date{}
+  % Production converters can emit native front matter at \maketitle.
+  % A begin-document hook then precedes the title; use an explicit body call.
+  \renewcommand{\printprojectlinks}{%
+    \vxl@htmlinfo
+    \global\let\vxl@htmlinfo\@empty
+  }
+
+  % PDF layout controls have no semantic HTML equivalent. Consume their
+  % complete arguments so values such as '14mm' cannot leak into the page.
+  \providecommand{\setthemecolor}[1]{}
+  \providecommand{\setsectionfont}[1]{}
+  \providecommand{\setsubsectionfont}[1]{}
+  \providecommand{\setsectionlinecolor}[1]{}
+  \providecommand{\setsectionlinethickness}[1]{}
+  \providecommand{\settitlefont}[1]{}
+  \providecommand{\setabstractfont}[1]{}
+  \providecommand{\setabstractframecolor}[1]{}
+  \providecommand{\setabstractbgcolor}[1]{}
+  \providecommand{\setlogoheight}[1]{}
+  \providecommand{\setlogospacing}[1]{}
+  \providecommand{\setlogotolineshift}[1]{}
+  \providecommand{\settoprulethickness}[1]{}
+  \providecommand{\setbottomrulethickness}[1]{}
+  \providecommand{\settitlerulethickness}[1]{}
+  \providecommand{\sectionlineon}{}
+  \providecommand{\sectionlineoff}{}
+  \providecommand{\sectionformatnoline}{}
+  \providecommand{\sectionformatwithline}{}
+  \providecommand{\titlecenter}{}
+  \providecommand{\titleleft}{}
+  \providecommand{\titleboldon}{}
+  \providecommand{\titleboldoff}{}
+  \providecommand{\abstractboxon}{}
+  \providecommand{\abstractboxoff}{}
+  \providecommand{\abstracttitlecenter}{}
+  \providecommand{\abstracttitleleft}{}
+  \providecommand{\setsjtublue}{}
+  \providecommand{\themeblue}[1]{\textbf{#1}}
+  \providecommand{\nm}[1]{#1}
+  \providecommand{\beginappendix}{%
+    \appendix
+    \section*{Appendix}
+    \setcounter{section}{1}%
+    \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}%
+  }
+  \makeatother
+\fi
